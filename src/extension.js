@@ -135,8 +135,7 @@ class Extension {
         const workspaceManager = global.workspace_manager;
         const activeWorkspace = workspaceManager.get_active_workspace();
         const windows = activeWorkspace.list_windows().filter(metaWindow => {
-            return metaWindow.is_on_primary_monitor()
-                && metaWindow.showing_on_its_workspace()
+            return metaWindow.showing_on_its_workspace()
                 && !metaWindow.is_hidden()
                 && metaWindow.get_window_type() !== Meta.WindowType.DESKTOP
                 && (!Meta.is_wayland_compositor() || !metaWindow.skip_taskbar);
@@ -152,6 +151,7 @@ class Extension {
         });
 
         this._setTransparent(!isNearEnough);
+
     }
 
     _setTransparent(transparent) {
@@ -160,13 +160,27 @@ class Extension {
             Main.panel.remove_style_class_name('transparent-top-bar--solid');
             Main.panel.add_style_class_name('transparent-top-bar--transparent');
             Main.panel.add_style_class_name('transparent-top-bar--transparent-' + transparency);
+            if(Main.mmPanel) {
+                for (var i = 0, len = Main.mmPanel.length; i < len; i++) {
+                    Main.mmPanel[i].remove_style_class_name('transparent-top-bar--solid');
+                    Main.mmPanel[i].add_style_class_name('transparent-top-bar--transparent');
+                    Main.mmPanel[i].add_style_class_name('transparent-top-bar--transparent-' + transparency);
+                }
+            }
         } else {
             Main.panel.add_style_class_name('transparent-top-bar--solid');
             Main.panel.remove_style_class_name('transparent-top-bar--transparent');
             Main.panel.remove_style_class_name('transparent-top-bar--transparent-' + transparency);
+            if(Main.mmPanel) {
+                for (var i = 0, len = Main.mmPanel.length; i < len; i++) {
+                    Main.mmPanel[i].add_style_class_name('transparent-top-bar--solid');
+                    Main.mmPanel[i].remove_style_class_name('transparent-top-bar--transparent');
+                    Main.mmPanel[i].remove_style_class_name('transparent-top-bar--transparent-' + transparency);
+                }
+            }
+            
         }
     }
-
 };
 
 function init() {
