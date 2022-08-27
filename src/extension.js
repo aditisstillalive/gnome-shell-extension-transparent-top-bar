@@ -70,6 +70,7 @@ class Extension {
                 const oldTransparency = this._currentTransparency;
                 this._currentTransparency = this._settings.get_int('transparency');
                 Main.panel.remove_style_class_name('transparent-top-bar--transparent-' + oldTransparency);
+                Main.mmPanel[0].remove_style_class_name('transparent-top-bar--transparent-' + oldTransparency);
                 this._updateTransparent();
             }, 250);
             return;
@@ -80,6 +81,7 @@ class Extension {
             clearTimeout(this.darkFullScreenChangeDebounce);
             this.darkFullScreenChangeDebounce = setTimeout(() => {
                 Main.panel.remove_style_class_name('transparent-top-bar--transparent-' + this._currentTransparency);
+                Main.mmPanel[0].remove_style_class_name('transparent-top-bar--transparent-' + this._currentTransparency);
                 this._updateTransparent();
             }, 250);
             return;
@@ -164,7 +166,7 @@ class Extension {
                 for (var i = 0, len = Main.mmPanel.length; i < len; i++) {
                     Main.mmPanel[i].remove_style_class_name('transparent-top-bar--solid');
                     Main.mmPanel[i].add_style_class_name('transparent-top-bar--transparent');
-                    Main.mmPanel[i].add_style_class_name('transparent-top-bar--transparent-' + transparency);
+                    Main.mmPanel[i].add_style_class_name('transparent-top-bar--transparent-' + 0);
                 }
             }
         } else {
@@ -175,7 +177,7 @@ class Extension {
                 for (var i = 0, len = Main.mmPanel.length; i < len; i++) {
                     Main.mmPanel[i].add_style_class_name('transparent-top-bar--solid');
                     Main.mmPanel[i].remove_style_class_name('transparent-top-bar--transparent');
-                    Main.mmPanel[i].remove_style_class_name('transparent-top-bar--transparent-' + transparency);
+                    Main.mmPanel[i].remove_style_class_name('transparent-top-bar--transparent-' + 0);
                 }
             }
             
